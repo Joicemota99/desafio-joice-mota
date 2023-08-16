@@ -1,8 +1,7 @@
 import { cardapio } from "./banco-de-dados/cardapio.js"
 
 class CaixaDaLanchonete {
-    valorTotal = 0
-            
+    valorTotal = 0    
     calcularValorDaCompra(metodoDePagamento, itens) {
         if (itens.length == 0) {
             return "Não há itens no carrinho de compra!"
@@ -15,11 +14,9 @@ class CaixaDaLanchonete {
         let temSanduiche = false
         for (const item of itens) {
             const [codigo] = item.split(',')
-            
-            // find
             if (!cardapio[codigo]) {
                 return "Item inválido!"
-            }  
+            }
             if (codigo === 'chantily') {
                 temChantily = true
             }
@@ -32,13 +29,10 @@ class CaixaDaLanchonete {
             if (codigo === 'sanduiche'){
                 temSanduiche = true
             }
-        }      
-      
-        // *---------------- Forma de pagamento 
+        }    
         if(metodoDePagamento !== 'dinheiro'&& metodoDePagamento !== 'credito' && metodoDePagamento !== 'debito'){
             return "Forma de pagamento inválida!"
         }
-        
         if (metodoDePagamento === 'dinheiro') {
             if(temChantily && itens.length === 1){
                 return "Item extra não pode ser pedido sem o principal"
@@ -60,25 +54,19 @@ class CaixaDaLanchonete {
         if(this.valorTotal === 0){
             return "Quantidade inválida!"
         }
-        
         const valorFormatado = (this.valorTotal/100).toFixed(2)
         return `R$ ${valorFormatado.toString().replace('.',',')}`
-
     }
-
     somar(itens){
-        // Reduce
         for (const item of itens) {
             const [codigo, quantidade] = item.split(',')
             if (!cardapio[codigo]) {
                 return "Item inválido!"
-            } 
+            }
             const valorItem = cardapio[codigo].valor * parseInt(quantidade)
             this.valorTotal += valorItem
         }
     }
 }
-    
-        
 export { CaixaDaLanchonete };
         
